@@ -1,0 +1,16 @@
+[
+  {
+    "category": "Platinum Sponsors",
+    "sponsors": [
+      { "name": "EC-Council", "logo": "./EC-Council.png", "url": "https://www.eccouncil.org/" },
+      { "name": "Quick Heal", "logo": "./Quick Heal.png", "url": "https://www.quickheal.co.in/" }
+    ]
+  },
+  {
+    "category": "Gold Sponsors",
+    "sponsors": [
+      { "name": "Secure Hack", "logo": "./Secure Hack.png", "url": "https://www.securehack.net/" },
+      { "name": "xyz", "logo": "./xyz.png", "url": "https://gen.xyz/" }
+    ]
+  }
+]

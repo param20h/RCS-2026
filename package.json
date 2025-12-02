@@ -1,0 +1,45 @@
+{
+    "private": true,
+    "name": "next13-tailwind-template",
+    "version": "0.1.0",
+    "scripts": {
+        "build": "next build",
+        "dev": "next dev",
+        "lint": "next lint",
+        "lint:fix": "next lint --fix",
+        "start": "next start"
+    },
+    "dependencies": {
+        "@headlessui/react": "^1.7.15",
+        "@heroicons/react": "^2.0.18",
+        "@hookform/resolvers": "^3.3.3",
+        "@tailwindcss/forms": "^0.5.3",
+        "@types/node": "20.3.3",
+        "@types/react": "18.2.14",
+        "@types/react-dom": "18.2.6",
+        "@vercel/analytics": "^1.1.1",
+        "autoprefixer": "10.4.14",
+        "axios": "^1.6.4",
+        "class-variance-authority": "^0.6.1",
+        "clsx": "^1.2.1",
+        "eslint": "8.44.0",
+        "eslint-config-next": "13.4.7",
+        "github-markdown-css": "^5.5.0",
+        "next": "13.5.4",
+        "postcss": "8.4.31",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-feather": "^2.0.10",
+        "react-hook-form": "^7.45.1",
+        "react-hot-toast": "^2.4.1",
+        "react-razorpay": "^2.0.1",
+        "showdown": "^2.1.0",
+        "tailwind-merge": "^1.13.2",
+        "tailwindcss": "3.3.2",
+        "typescript": "5.1.6",
+        "zod": "^3.22.3"
+    },
+    "devDependencies": {
+        "@types/showdown": "^2.0.6"
+    }
+}
