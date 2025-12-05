@@ -18,6 +18,21 @@ const navigation = [
         href: 'https://s.encryptedge.in/discord',
         current: false,
     },
+    {
+        name: 'Attendee Dashboard',
+        href: '/dashboard/attendee',
+        current: false,
+    },
+    {
+        name: 'Organizer Dashboard',
+        href: '/dashboard/organizer',
+        current: false,
+    },
+    {
+        name: 'Login',
+        href: '/login',
+        current: false,
+    },
 ]
 
 const Navbar = () => {
