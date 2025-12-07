@@ -17,6 +17,7 @@ export interface User {
 
 export interface Organizer {
     _id: string
+    name: string
     email: string
     addedAt: string
 }
