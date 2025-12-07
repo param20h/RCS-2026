@@ -9,17 +9,38 @@ export async function POST(request: Request) {
         await dbConnect()
         const { email, password } = await request.json()
 
-        // Super Admin Hardcoded Backdoor
-        if (email === 'admin@rcs.com') {
-            if (password === 'admin123') {
-                 return NextResponse.json({
-                    id: 'admin',
-                    name: 'Super Admin',
-                    email: 'admin@rcs.com',
-                    role: 'superadmin',
-                }, { status: 200 })
+        const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+        const ADMIN_PASS = process.env.ADMIN_PASS
+
+        // 1. Super Admin Hardcoded Backdoor (Using Env Vars)
+        if (ADMIN_EMAIL && email === ADMIN_EMAIL) {
+            if (ADMIN_PASS && password === ADMIN_PASS) {
+                
+                // Check if admin exists in DB to allow profile updates
+                const existingAdmin = await User.findOne({ email: ADMIN_EMAIL })
+                
+                if (!existingAdmin) {
+                    // Bootstrap Admin in DB if not exists
+                    const hashedPassword = await bcrypt.hash(ADMIN_PASS, 10)
+                    const newAdmin = await User.create({
+                        email: ADMIN_EMAIL,
+                        password: hashedPassword,
+                        role: 'superadmin',
+                        name: 'Super Admin',
+                        team_name: 'HQ',
+                        contact_no: '0000000000',
+                        where_you_reside: 'HQ'
+                    })
+                    const adminData = newAdmin.toObject()
+                    adminData.id = adminData._id.toString()
+                    delete adminData._id
+                    delete adminData.password
+                    return NextResponse.json(adminData, { status: 200 })
+                }
+                
+                // If admin exists, fall through to standard User check to allow DB updates
             } else {
-                 return NextResponse.json({ error: 'Invalid admin credentials' }, { status: 401 })
+                return NextResponse.json({ error: 'Invalid admin credentials' }, { status: 401 })
             }
         }
 
@@ -54,7 +75,7 @@ export async function POST(request: Request) {
             return NextResponse.json(orgData, { status: 200 })
         }
 
-        // 3. Check User Collection (Attendees)
+        // 3. Check User Collection (Attendees & Bootstrapped Superadmin)
         const user = await User.findOne({ email })
 
         if (!user) {
