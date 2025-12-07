@@ -19,18 +19,13 @@ const navigation = [
         current: false,
     },
     {
-        name: 'Attendee Dashboard',
-        href: '/dashboard/attendee',
-        current: false,
-    },
-    {
-        name: 'Organizer Dashboard',
-        href: '/dashboard/organizer',
-        current: false,
-    },
-    {
         name: 'Login',
         href: '/login',
+        current: false,
+    },
+    {
+        name: 'Sign Up',
+        href: '/register',
         current: false,
     },
 ]
@@ -45,24 +40,23 @@ const Navbar = () => {
             >
                 {({ open }) => (
                     <>
-                        <div className="mx-auto px-2 sm:px-4 lg:px-8 w-full py-2">
-                            <div className="relative flex h-16 items-center justify-between w-full">
-                                <div className="flex items-center px-2 lg:px-0 w-full">
-                                    <div className="shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
+                        <div className="w-full px-2 py-2 mx-auto sm:px-4 lg:px-8">
+                            <div className="relative flex items-center justify-between w-full h-16">
+                                <div className="flex items-center w-full px-2 lg:px-0">
+                                    <a href="/" className="flex items-center gap-2 transition-transform cursor-pointer shrink-0 hover:scale-105">
                                         <img
                                             src="/logo.png"
                                             alt="RCS CTF Logo"
-                                            className="h-12 w-auto"
+                                            className="w-auto h-12"
                                         />
-                                        <span className="font-bold text-xl tracking-wider text-white hidden sm:block">RCS CTF 2026</span>
-                                    </div>
+                                        <span className="hidden text-xl font-bold tracking-wider text-white sm:block">RCS CTF 2026</span>
+                                    </a>
                                     <div className="hidden lg:ml-auto lg:block">
                                         <div className="flex space-x-4">
                                             {navigation.map((item) => (
                                                 <a
                                                     key={item.name}
                                                     href={item.href}
-                                                    target="_blank"
                                                     className={cn(
                                                         'rounded-md px-3 py-2 text-lg font-medium flex items-center gap-2 transition-all duration-300 relative group',
                                                         {
@@ -85,18 +79,18 @@ const Navbar = () => {
                                 </div>
                                 <div className="flex lg:hidden">
                                     {/* Mobile menu button */}
-                                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                                    <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                                         <span className="sr-only">
                                             Open main menu
                                         </span>
                                         {open ? (
                                             <XMarkIcon
-                                                className="block h-6 w-6"
+                                                className="block w-6 h-6"
                                                 aria-hidden="true"
                                             />
                                         ) : (
                                             <Bars3Icon
-                                                className="block h-6 w-6"
+                                                className="block w-6 h-6"
                                                 aria-hidden="true"
                                             />
                                         )}
@@ -104,8 +98,8 @@ const Navbar = () => {
                                 </div>
                             </div>
                         </div>
-                        <Disclosure.Panel className="lg:hidden glass-card mt-2 rounded-xl overflow-hidden">
-                            <div className="space-y-1 px-2 pb-3 pt-2">
+                        <Disclosure.Panel className="mt-2 overflow-hidden lg:hidden glass-card rounded-xl">
+                            <div className="px-2 pt-2 pb-3 space-y-1">
                                 {navigation.map((item) => (
                                     <Disclosure.Button
                                         key={item.name}
@@ -127,16 +121,6 @@ const Navbar = () => {
                                         {item.name}
                                     </Disclosure.Button>
                                 ))}
-                                <Disclosure.Button
-                                    as="a"
-                                    href="#ticketSection"
-                                    className={cn(
-                                        'block px-3 py-2 text-base font-medium text-black bg-white rounded-md hover:bg-gray-200 transition-colors mt-4 text-center'
-                                    )}
-                                    onClick={() => setRegisterOpen(false)}
-                                >
-                                    Get passes
-                                </Disclosure.Button>
                             </div>
                         </Disclosure.Panel>
                     </>

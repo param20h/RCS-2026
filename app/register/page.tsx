@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { api } from '@/services/api'
 
 export default function RegisterPage() {
     const router = useRouter()
@@ -16,8 +17,7 @@ export default function RegisterPage() {
         register,
         control,
         handleSubmit,
-        formState: { errors },
-        reset,
+        formState: { errors, isSubmitting },
     } = useForm<RegisterForm>({
         resolver: zodResolver(registerFormSchema),
         defaultValues: {
@@ -31,50 +31,35 @@ export default function RegisterPage() {
     });
 
     const formSubmit = async (data: RegisterForm) => {
-        if (data.uni_id === '') data.uni_id = 'N/A'
-        if (data.uni_name === '') data.uni_name = 'N/A'
+        if (!data.uni_id) data.uni_id = 'N/A'
+        if (!data.uni_name) data.uni_name = 'N/A'
 
         try {
-            // Simulate API call and save to localStorage
-            console.log('Registering user:', data)
-            const user = {
-                ...data,
-                id: Math.random().toString(36).substr(2, 9),
-                role: 'attendee',
-                registeredAt: new Date().toISOString(),
-            }
-            localStorage.setItem('currentUser', JSON.stringify(user))
-
-            // Also add to a list of all registrations for the organizer dashboard
-            const allRegistrations = JSON.parse(localStorage.getItem('allRegistrations') || '[]')
-            allRegistrations.push(user)
-            localStorage.setItem('allRegistrations', JSON.stringify(allRegistrations))
-
+            await api.register(data)
             toast.success('Successfully Registered!')
-            router.push('/dashboard/attendee')
-        } catch (err) {
-            console.error(err)
-            toast.error('Error Registering')
+            router.push('/dashboard')
+        } catch (err: any) {
+            toast.error(err.message || 'Error Registering')
         }
     }
 
     return (
-        <main className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative overflow-hidden">
+        <main className="relative flex flex-col items-center justify-center min-h-screen px-4 pt-24 pb-12 overflow-hidden sm:px-6 lg:px-8">
             <div className="scanlines"></div>
             <div className="absolute inset-0 -z-10 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
-            <div className="w-full max-w-2xl space-y-8 bg-black/50 p-8 rounded-xl border border-white/10 backdrop-blur-md shadow-2xl relative z-10">
+            <div className="relative z-10 w-full max-w-2xl p-8 space-y-8 border shadow-2xl bg-black/50 rounded-xl border-white/10 backdrop-blur-md">
                 <div>
-                    <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white glitch">
+                    <h2 className="mt-6 text-3xl font-bold tracking-tight text-center text-white glitch">
                         Register for RCS CTF
                     </h2>
-                    <p className="mt-2 text-center text-sm text-gray-400">
+                    <p className="mt-2 text-sm text-center text-gray-400">
                         Join the ranks of Cyber Sentinels
                     </p>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit(formSubmit)}>
                     <div className="space-y-4 rounded-md shadow-sm">
-                        <h3 className="text-xl font-semibold text-white border-b border-white/10 pb-2">Team Leader Details</h3>
+                        <h3 className="pb-2 text-xl font-semibold text-white border-b border-white/10">Team Leader Details</h3>
                         <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium text-gray-300">
@@ -88,9 +73,7 @@ export default function RegisterPage() {
                                     {...register('name')}
                                     className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                 />
-                                {errors.name && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
-                                )}
+                                {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
                             </div>
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-300">
@@ -104,10 +87,24 @@ export default function RegisterPage() {
                                     {...register('email')}
                                     className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                 />
-                                {errors.email && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
-                                )}
+                                {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                             </div>
+                            
+                            <div className="sm:col-span-2">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                                    Password
+                                </label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    autoComplete="new-password"
+                                    required
+                                    {...register('password')}
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
+                                />
+                                {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
+                            </div>
+
                             <div>
                                 <label htmlFor="contact_no" className="block text-sm font-medium text-gray-300">
                                     Contact Number
@@ -120,9 +117,7 @@ export default function RegisterPage() {
                                     {...register('contact_no')}
                                     className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                 />
-                                {errors.contact_no && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.contact_no.message}</p>
-                                )}
+                                {errors.contact_no && <p className="mt-1 text-xs text-red-500">{errors.contact_no.message}</p>}
                             </div>
                             <div>
                                 <label htmlFor="where_you_reside" className="block text-sm font-medium text-gray-300">
@@ -135,9 +130,7 @@ export default function RegisterPage() {
                                     {...register('where_you_reside')}
                                     className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                 />
-                                {errors.where_you_reside && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.where_you_reside.message}</p>
-                                )}
+                                {errors.where_you_reside && <p className="mt-1 text-xs text-red-500">{errors.where_you_reside.message}</p>}
                             </div>
                             <div>
                                 <label htmlFor="uni_id" className="block text-sm font-medium text-gray-300">
@@ -163,7 +156,7 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        <h3 className="text-xl font-semibold text-white border-b border-white/10 pb-2 pt-4">Team Details</h3>
+                        <h3 className="pt-4 pb-2 text-xl font-semibold text-white border-b border-white/10">Team Details</h3>
                         <div>
                             <label htmlFor="team_name" className="block text-sm font-medium text-gray-300">
                                 Team Name
@@ -175,9 +168,7 @@ export default function RegisterPage() {
                                 {...register('team_name')}
                                 className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                             />
-                            {errors.team_name && (
-                                <p className="text-red-500 text-xs mt-1">{errors.team_name.message}</p>
-                            )}
+                            {errors.team_name && <p className="mt-1 text-xs text-red-500">{errors.team_name.message}</p>}
                         </div>
 
                         <div className="space-y-4">
@@ -187,24 +178,24 @@ export default function RegisterPage() {
                                     <button
                                         type="button"
                                         onClick={() => append({ name: '', email: '', contact_no: '' })}
-                                        className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+                                        className="inline-flex items-center px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-white/10 hover:bg-white/20"
                                     >
-                                        <PlusIcon className="h-5 w-5 mr-1" />
+                                        <PlusIcon className="w-5 h-5 mr-1" />
                                         Add Member
                                     </button>
                                 )}
                             </div>
 
                             {fields.map((field, index) => (
-                                <div key={field.id} className="p-4 rounded-lg bg-white/5 border border-white/10 relative">
+                                <div key={field.id} className="relative p-4 border rounded-lg bg-white/5 border-white/10">
                                     <button
                                         type="button"
                                         onClick={() => remove(index)}
-                                        className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                                        className="absolute text-gray-400 top-2 right-2 hover:text-red-500"
                                     >
-                                        <TrashIcon className="h-5 w-5" />
+                                        <TrashIcon className="w-5 h-5" />
                                     </button>
-                                    <h5 className="text-sm font-medium text-gray-300 mb-3">Member {index + 1}</h5>
+                                    <h5 className="mb-3 text-sm font-medium text-gray-300">Member {index + 1}</h5>
                                     <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-3 sm:gap-x-4">
                                         <div>
                                             <input
@@ -213,7 +204,7 @@ export default function RegisterPage() {
                                                 className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                             />
                                             {errors.team_members?.[index]?.name && (
-                                                <p className="text-red-500 text-xs mt-1">{errors.team_members[index]?.name?.message}</p>
+                                                <p className="mt-1 text-xs text-red-500">{errors.team_members[index]?.name?.message}</p>
                                             )}
                                         </div>
                                         <div>
@@ -223,7 +214,7 @@ export default function RegisterPage() {
                                                 className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                             />
                                             {errors.team_members?.[index]?.email && (
-                                                <p className="text-red-500 text-xs mt-1">{errors.team_members[index]?.email?.message}</p>
+                                                <p className="mt-1 text-xs text-red-500">{errors.team_members[index]?.email?.message}</p>
                                             )}
                                         </div>
                                         <div>
@@ -233,7 +224,7 @@ export default function RegisterPage() {
                                                 className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
                                             />
                                             {errors.team_members?.[index]?.contact_no && (
-                                                <p className="text-red-500 text-xs mt-1">{errors.team_members[index]?.contact_no?.message}</p>
+                                                <p className="mt-1 text-xs text-red-500">{errors.team_members[index]?.contact_no?.message}</p>
                                             )}
                                         </div>
                                     </div>
@@ -245,10 +236,17 @@ export default function RegisterPage() {
                     <div>
                         <button
                             type="submit"
-                            className="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"
+                            disabled={isSubmitting}
+                            className="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-300 shadow-[0_0_15px_rgba(var(--color-primary),0.5)] disabled:opacity-50"
                         >
-                            Complete Registration
+                            {isSubmitting ? 'Registering...' : 'Complete Registration'}
                         </button>
+                    </div>
+
+                    <div className="text-center">
+                        <a href="/login" className="text-sm text-primary hover:text-primary/80">
+                            Already have an account? Login here
+                        </a>
                     </div>
                 </form>
             </div>

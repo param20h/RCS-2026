@@ -1,74 +1,105 @@
 import { RegisterForm } from '@/validators/register.validator'
+import axios from 'axios'
 
-export interface User extends RegisterForm {
+export interface User {
     id: string
-    role: 'attendee' | 'organizer'
+    name: string
+    email: string
+    contact_no: string
+    uni_id?: string
+    uni_name?: string
+    where_you_reside: string
+    team_name: string
+    team_members?: any[]
+    role: 'attendee' | 'organizer' | 'superadmin'
     registeredAt: string
+}
+
+export interface Organizer {
+    _id: string
+    email: string
+    addedAt: string
 }
 
 export interface LoginCredentials {
     email: string
+    password?: string
 }
 
-// Mock implementation using localStorage
-// Replace these with real API calls
 class ApiService {
-    private async delay(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms))
+    private get baseUrl() {
+        return process.env.NEXT_PUBLIC_API_URL || '/api'
+    }
+
+    private getAuthHeaders() {
+        const user = this.getCurrentUser()
+        if (user && user.email) {
+            return {
+                'x-user-email': user.email
+            }
+        }
+        return {}
     }
 
     async login(credentials: LoginCredentials): Promise<User> {
-        await this.delay(500) // Simulate network delay
-
-        if (credentials.email === 'admin@rcs.com') {
-            const adminUser: User = {
-                id: 'admin',
-                name: 'Organizer',
-                email: 'admin@rcs.com',
-                contact_no: '',
-                role: 'organizer',
-                registeredAt: new Date().toISOString(),
-                where_you_reside: '',
-                uni_id: '',
-                uni_name: '',
-                team_name: '',
-            }
-            this.setCurrentUser(adminUser)
-            return adminUser
+        try {
+            const response = await axios.post(`${this.baseUrl}/auth/login`, credentials)
+            const user = response.data
+            this.setCurrentUser(user)
+            return user
+        } catch (error: any) {
+            throw new Error(error.response?.data?.error || 'Login failed')
         }
-
-        const allRegistrations = this.getStoredRegistrations()
-        const user = allRegistrations.find((u) => u.email === credentials.email)
-
-        if (!user) {
-            throw new Error('User not found')
-        }
-
-        this.setCurrentUser(user)
-        return user
     }
 
     async register(data: RegisterForm): Promise<User> {
-        await this.delay(500)
-
-        const user: User = {
-            ...data,
-            id: Math.random().toString(36).substr(2, 9),
-            role: 'attendee',
-            registeredAt: new Date().toISOString(),
+        try {
+            const response = await axios.post(`${this.baseUrl}/auth/register`, data)
+            const user = response.data.user
+            this.setCurrentUser(user)
+            return user
+        } catch (error: any) {
+            throw new Error(error.response?.data?.error || 'Registration failed')
         }
-
-        const allRegistrations = this.getStoredRegistrations()
-        allRegistrations.push(user)
-        localStorage.setItem('allRegistrations', JSON.stringify(allRegistrations))
-
-        this.setCurrentUser(user)
-        return user
     }
 
     async getRegistrations(): Promise<User[]> {
-        await this.delay(500)
-        return this.getStoredRegistrations()
+        try {
+            const response = await axios.get(`${this.baseUrl}/registrations`, {
+                headers: this.getAuthHeaders()
+            })
+            return response.data
+        } catch (error: any) {
+            if (error.response?.status === 403) throw new Error("Unauthorized")
+            return []
+        }
+    }
+
+    // --- Admin Methods ---
+    async getOrganizers(): Promise<Organizer[]> {
+        try {
+            const response = await axios.get(`${this.baseUrl}/admin/organizers`, {
+                headers: this.getAuthHeaders()
+            })
+            return response.data
+        } catch (error) { return [] }
+    }
+
+    async addOrganizer(email: string): Promise<void> {
+        try {
+            await axios.post(`${this.baseUrl}/admin/organizers`, { email }, {
+                headers: this.getAuthHeaders()
+            })
+        } catch (error: any) {
+            throw new Error(error.response?.data?.error || 'Failed to add')
+        }
+    }
+
+    async removeOrganizer(email: string): Promise<void> {
+        await axios.delete(`${this.baseUrl}/admin/organizers`, {
+            data: { email },
+            headers: this.getAuthHeaders()
+        })
     }
 
     getCurrentUser(): User | null {
@@ -83,12 +114,6 @@ class ApiService {
 
     private setCurrentUser(user: User): void {
         localStorage.setItem('currentUser', JSON.stringify(user))
-    }
-
-    private getStoredRegistrations(): User[] {
-        if (typeof window === 'undefined') return []
-        const stored = localStorage.getItem('allRegistrations')
-        return stored ? JSON.parse(stored) : []
     }
 }
 
