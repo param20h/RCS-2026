@@ -17,17 +17,7 @@ const navigation = [
         name: 'Join Discord',
         href: 'https://s.encryptedge.in/discord',
         current: false,
-    },
-    {
-        name: 'Login',
-        href: '/login',
-        current: false,
-    },
-    {
-        name: 'Sign Up',
-        href: '/register',
-        current: false,
-    },
+    }
 ]
 
 const Navbar = () => {
