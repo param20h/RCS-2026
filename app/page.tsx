@@ -78,7 +78,7 @@ export default function Home() {
                             CTF
                         </p>
                         <p className="text-4xl font-semibold ml-28">
-                            26 · 01 · 2026
+                            30 · 01 · 2026
                         </p>
                     </div>
                 </div>
