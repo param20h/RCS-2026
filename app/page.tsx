@@ -19,7 +19,7 @@ export default function Home() {
         <main className="text-text ">
             <section className="relative min-h-screen lg:h-screen w-screen overflow-hidden">
                 <div className="scanlines"></div>
-                <div className="flex relative flex-col min-h-screen lg:h-screen px-4 lg:px-8 pt-18 justify-center p-2 mx-auto max-w-7xl z-20">
+                <div className="flex relative flex-col min-h-screen lg:h-screen px-4 lg:px-8 pt-32 lg:pt-24 justify-center p-2 mx-auto max-w-7xl z-20">
                     <h1 className="text-5xl lg:text-6xl font-bold glitch">
                         REPUBLIC OF <br />
                         <span className="text-primary glitch">
