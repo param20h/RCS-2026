@@ -67,7 +67,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     src="/back.mp4"
                     autoPlay
                     loop
-                    
+                    muted
                     playsInline
                 />
                 <div className="fixed top-0 left-0 w-full h-full bg-black/50 -z-10" />

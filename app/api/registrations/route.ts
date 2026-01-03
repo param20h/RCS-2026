@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     try {
         await dbConnect()
 
-        const headersList = headers()
+        const headersList = await headers()
         const requesterEmail = headersList.get('x-user-email')
 
         if (!requesterEmail) {

@@ -5,8 +5,8 @@ import User from '@/models/User'
 import { headers } from 'next/headers'
 
 // Helper to verify Super Admin
-const isSuperAdmin = (req: Request) => {
-    const headersList = headers()
+const isSuperAdmin = async (req: Request) => {
+    const headersList = await headers()
     const email = headersList.get('x-user-email')
     return email === 'admin@rcs.com'
 }
@@ -14,7 +14,7 @@ const isSuperAdmin = (req: Request) => {
 export async function GET(request: Request) {
     try {
         await dbConnect()
-        if (!isSuperAdmin(request)) {
+        if (!(await isSuperAdmin(request))) {
             return NextResponse.json({ error: 'Unauthorized Access' }, { status: 403 })
         }
         const organizers = await Organizer.find().sort({ addedAt: -1 })
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         await dbConnect()
-        if (!isSuperAdmin(request)) {
+        if (!(await isSuperAdmin(request))) {
             return NextResponse.json({ error: 'Unauthorized Access' }, { status: 403 })
         }
         const { email } = await request.json()
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
     try {
         await dbConnect()
-        if (!isSuperAdmin(request)) {
+        if (!(await isSuperAdmin(request))) {
             return NextResponse.json({ error: 'Unauthorized Access' }, { status: 403 })
         }
         const { email } = await request.json()
