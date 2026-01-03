@@ -51,59 +51,6 @@
     background-position: center;
     background-repeat: no-repeat;
 }
-@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');    
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@font-face {
-    font-family: "Glitch";
-    src: url("/glitch.ttf");
-}
-
-@font-face {
-    font-family: "Minecraft";
-    src: url("/Minecraft.woff2");
-}
-
-@font-face {
-    font-family: "MinecraftBold";
-    src: url("/MinecraftBold.woff2");
-}
-
-:root {
-    --color-text: 245 245 245;
-    --color-background: 0 0 0;
-    --color-primary: 255 41 109;
-    --color-secondary: 255 255 255;
-    --color-accent: 17 218 232;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Minecraft', sans-serif;
-}
-
-.glitch {
-    font-family: "Glitch";
-}
-
-.venue-back {
-    background-image: url("/wow-back.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.rcs-back-1 {
-    background-image: url("/rcs-back1.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
 
 .rcs-back-2 {
     background-image: url("/rcs-back2.webp");
