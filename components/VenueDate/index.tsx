@@ -8,7 +8,7 @@ function VenueDate() {
                     <p className="mb-3 text-3xl text-primary font-medium">
                         Date
                     </p>
-                    <p className="text-6xl font-bold">26 - 27 Jan 2026</p>
+                    <p className="text-6xl font-bold">30 - 31 Jan 2026</p>
                 </div>
                 <div className="item">
                     <p className="mb-3 text-3xl text-primary font-medium">
