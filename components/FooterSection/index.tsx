@@ -10,37 +10,49 @@ const FooterSection: React.FC = () => {
                 <div className="icons flex flex-wrap max-w-full items-center gap-5">
                     <a
                         className="rounded-full border-2 border-white p-2"
-                        href="https://s.encryptedge.in/fb"
+                        href="https://www.facebook.com/EncryptEdge"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <Facebook height={30} width={30} />
                     </a>
                     <a
                         className="rounded-full border-2 border-white p-2"
-                        href="https://s.encryptedge.in/ig"
+                        href="https://www.instagram.com/encryptedge/"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <Instagram height={30} width={30} />
                     </a>
                     <a
                         className="rounded-full border-2 border-white p-2"
-                        href="https://s.encryptedge.in/x"
+                        href="http://x.com/Encrypt_Edge"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <Twitter height={30} width={30} />
                     </a>
                     <a
                         className="rounded-full border-2 border-white p-2"
-                        href="https://s.encryptedge.in/dc"
+                        href="https://discord.gg/hT826cUw"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <Discord height={30} width={30} />
                     </a>
                     <a
                         className="rounded-full border-2 border-white p-2"
-                        href="https://s.encryptedge.in/wc"
+                        href="https://chat.whatsapp.com/Kdzl9jmcE4f2RiPcKhxguE"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <Whatsapp height={30} width={30} />
                     </a>
                     <a
                         className="rounded-full border-2 border-white p-2"
-                        href="https://s.encryptedge.in/gh"
+                        href="https://github.com/encryptedge"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <GitHub height={30} width={30} />
                     </a>

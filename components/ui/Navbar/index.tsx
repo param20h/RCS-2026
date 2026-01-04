@@ -15,7 +15,7 @@ import RegisterDialog from '@/components/RegisterDialog'
 const navigation = [
     {
         name: 'Join Discord',
-        href: 'https://s.encryptedge.in/discord',
+        href: 'https://discord.gg/hT826cUw',
         current: false,
     }
 ]
@@ -26,20 +26,20 @@ const Navbar = () => {
         <>
             <Disclosure
                 as="nav"
-                className="fixed top-4 left-0 right-0 mx-auto w-[95%] max-w-7xl z-50 glass-card rounded-2xl transition-all duration-300"
+                className="fixed top-4 left-0 right-0 mx-auto w-[95%] max-w-7xl z-50 glass-card rounded-2xl transition-all duration-300 backdrop-blur-md"
             >
                 {({ open }) => (
                     <>
-                        <div className="w-full px-2 py-2 mx-auto sm:px-4 lg:px-8">
+                        <div className="w-full px-2 py-2 mx-auto sm:px-4 lg:px-8" suppressHydrationWarning>
                             <div className="relative flex items-center justify-between w-full h-16">
                                 <div className="flex items-center w-full px-2 lg:px-0">
                                     <a href="/" className="flex items-center gap-2 transition-transform cursor-pointer shrink-0 hover:scale-105">
                                         <img
-                                            src="/logo.png"
-                                            alt="RCS CTF Logo"
+                                            src="/favicon.ico"
+                                            alt="Encrypt Edge Logo"
                                             className="w-auto h-12"
                                         />
-                                        <span className="hidden text-xl font-bold tracking-wider text-white sm:block">RCS CTF 2026</span>
+                                        <span className="hidden text-xl font-bold tracking-wider text-white sm:block">ENCRYPT EDGE</span>
                                     </a>
                                     <div className="hidden lg:ml-auto lg:block">
                                         <div className="flex space-x-4">
