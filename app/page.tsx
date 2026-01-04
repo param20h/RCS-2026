@@ -1,5 +1,7 @@
 "use client";
 import { CalendarIcon, TrophyIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import sponsorsData from '@/config/sponsors.json'
+import communityPartners from '@/config/communitypartners.json'
 
 export default function CommunityHome() {
     const events = [
@@ -163,6 +165,59 @@ export default function CommunityHome() {
                                 </div>
                             </div>
                         </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Previous Sponsors Section */}
+            <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
+                <h2 className="text-5xl lg:text-7xl font-bold text-center mb-16">
+                    Past <span className="text-primary">Sponsors</span>
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-center justify-items-center">
+                    {sponsorsData.flatMap(category => category.sponsors).map((sponsor, idx) => (
+                        <a
+                            key={idx}
+                            href={sponsor.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="glass-card p-6 rounded-xl border border-primary/30 hover:border-primary transition-all duration-300 hover:scale-105 w-full max-w-[200px]"
+                        >
+                            <img
+                                src={sponsor.logo}
+                                alt={sponsor.name}
+                                className="w-full h-auto object-contain"
+                            />
+                        </a>
+                    ))}
+                </div>
+            </section>
+
+            {/* Previous Community Partners Section */}
+            <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
+                <h2 className="text-5xl lg:text-7xl font-bold text-center mb-16">
+                    Previous <span className="text-accent">Community Partners</span>
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-center justify-items-center">
+                    {communityPartners.filter(partner => partner.name !== "Coming Soon").map((partner, idx) => (
+                        <a
+                            key={idx}
+                            href={partner.linkedin || partner.links}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="glass-card p-6 rounded-xl border border-accent/30 hover:border-accent transition-all duration-300 hover:scale-105 w-full max-w-[200px] flex items-center justify-center"
+                        >
+                            {partner.img && (
+                                <img
+                                    src={partner.img}
+                                    alt={partner.name}
+                                    className="w-full h-auto object-contain rounded-lg"
+                                />
+                            )}
+                            {!partner.img && (
+                                <p className="text-center font-bold">{partner.name}</p>
+                            )}
+                        </a>
                     ))}
                 </div>
             </section>

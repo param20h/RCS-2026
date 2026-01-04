@@ -1,9 +1,44 @@
 [
     {
-        "name": "Coming Soon",
-        "img": "",
-        "linkedin": "",
-        "links": ""
+        "name": "Vulncon",
+        "img": "/cp-vulncon.webp",
+        "linkedin": "https://in.linkedin.com/company/vulncon",
+        "links": "https://vulncon.in/"
+    },
+    {
+        "name": "DefCon Jalandhar",
+        "img": "/cp-dcg91181.png",
+        "linkedin": "https://www.linkedin.com/company/dcg91181",
+        "links": "https://www.dc91181.org/"
+    },
+    {
+        "name": "GDSC LPU",
+        "img": "/cp-gdsc-lpu.webp",
+        "linkedin": "https://in.linkedin.com/company/gdsclpu",
+        "links": "https://gdsc.community.dev/lovely-professional-university-jalandhar/"
+    },
+    {
+        "name": "TFUG Jalandhar",
+        "img": "/cp-tfug-jalandhar.webp",
+        "linkedin": "https://in.linkedin.com/company/tfugjalandhar",
+        "links": "https://github.com/tfugjalandhar"
+    },
+    {
+        "name": "CNCF Jalandhar",
+        "img": "/cp-cncf-jalandhar.webp",
+        "linkedin": "https://in.linkedin.com/company/cncfjalandhar",
+        "links": "https://community.cncf.io/cloud-native-jalandhar/"
+    },
+    {
+        "name": "GDSC IKGPTU",
+        "img": "/cp-gdsc-ikgptu.webp",
+        "linkedin": "https://in.linkedin.com/company/gdsc-ikgptu",
+        "links": "https://github.com/GDSC-IKGPTU"
+    },
+    { 
+        "name": "Crack Soft",
+        "img": "./Crack Soft.png",
+        "links": "https://cracksoftsecurities.org/",
+        "linkedin": "https://www.linkedin.com/company/cracksoftsecurtities"
     }
-
 ]
