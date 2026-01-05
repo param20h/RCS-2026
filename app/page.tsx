@@ -85,6 +85,105 @@ export default function CommunityHome() {
                 </div>
             </section>
 
+            {/* Upcoming Event Impact Section */}
+            <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
+                <div className="relative overflow-hidden rounded-3xl border-2 border-primary">
+                    {/* Background gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20"></div>
+                    
+                    <div className="relative z-10 glass-card p-8 lg:p-16">
+                        <div className="text-center mb-12">
+                            <div className="inline-block px-6 py-2 bg-primary rounded-full text-white font-bold mb-6 animate-pulse">
+                                COMING SOON
+                            </div>
+                            <h2 className="text-5xl lg:text-7xl font-bold mb-6">
+                                <span className="text-primary">RCS CTF 2026</span>
+                            </h2>
+                            <p className="text-2xl lg:text-3xl text-gray-300 mb-4">
+                                Decrypt, Defend, Conquer
+                            </p>
+                            <div className="flex items-center justify-center gap-2 text-xl text-gray-400 mb-8">
+                                <CalendarIcon className="w-6 h-6" />
+                                <span>January 30, 2026</span>
+                            </div>
+                        </div>
+
+                        {/* Impact Highlights */}
+                        <div className="grid md:grid-cols-3 gap-8 mb-12">
+                            <div className="text-center p-6 rounded-xl bg-primary/10 border border-primary/30">
+                                <div className="text-5xl mb-4">🎯</div>
+                                <h3 className="text-2xl font-bold text-primary mb-3">Real-World Skills</h3>
+                                <p className="text-gray-300">
+                                    Advanced challenges designed to simulate real cybersecurity scenarios and build practical skills
+                                </p>
+                            </div>
+                            <div className="text-center p-6 rounded-xl bg-accent/10 border border-accent/30">
+                                <div className="text-5xl mb-4">🌐</div>
+                                <h3 className="text-2xl font-bold text-accent mb-3">Network & Learn</h3>
+                                <p className="text-gray-300">
+                                    Connect with industry experts, professionals, and fellow enthusiasts from across India
+                                </p>
+                            </div>
+                            <div className="text-center p-6 rounded-xl bg-primary/10 border border-primary/30">
+                                <div className="text-5xl mb-4">🏆</div>
+                                <h3 className="text-2xl font-bold text-primary mb-3">Career Impact</h3>
+                                <p className="text-gray-300">
+                                    Win prizes, gain recognition, and open doors to exciting cybersecurity career opportunities
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Key Features */}
+                        <div className="bg-black/30 rounded-2xl p-8 mb-12">
+                            <h3 className="text-3xl font-bold text-center mb-8">What Makes RCS 2026 Special</h3>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="flex items-start gap-4">
+                                    <div className="text-primary text-2xl mt-1">✓</div>
+                                    <div>
+                                        <h4 className="text-xl font-bold mb-2">Cutting-Edge Challenges</h4>
+                                        <p className="text-gray-400">From web exploitation to cryptography, reverse engineering to forensics</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4">
+                                    <div className="text-primary text-2xl mt-1">✓</div>
+                                    <div>
+                                        <h4 className="text-xl font-bold mb-2">Expert Mentorship</h4>
+                                        <p className="text-gray-400">Learn from industry leaders and cybersecurity professionals</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4">
+                                    <div className="text-primary text-2xl mt-1">✓</div>
+                                    <div>
+                                        <h4 className="text-xl font-bold mb-2">Exciting Prizes</h4>
+                                        <p className="text-gray-400">Compete for prizes worth lakhs and exclusive swag</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4">
+                                    <div className="text-primary text-2xl mt-1">✓</div>
+                                    <div>
+                                        <h4 className="text-xl font-bold mb-2">All Skill Levels</h4>
+                                        <p className="text-gray-400">Whether you're a beginner or expert, there's something for everyone</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CTA */}
+                        <div className="text-center">
+                            <a 
+                                href="/rcs-2026"
+                                className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white font-bold py-5 px-10 rounded-xl text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/50"
+                            >
+                                <TrophyIcon className="w-6 h-6" />
+                                Register Now & Make Your Mark
+                                <ArrowRightIcon className="w-6 h-6" />
+                            </a>
+                            <p className="text-gray-400 mt-4">Limited seats available - Don't miss out!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Events Section */}
             <section className="max-w-7xl mx-auto px-4 lg:px-8 py-20">
                 <h2 className="text-5xl lg:text-7xl font-bold text-center mb-16">
