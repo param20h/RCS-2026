@@ -65,7 +65,7 @@ const FooterSection: React.FC = () => {
                     Mail us at:{' '}
                     <a
                         className="text-primary"
-                        href="mailto:rcs26@encryptedge.in"
+                        href="mailto:encryptedge@gmail.com"
                     >
                         encryptedge@gmail.com
                     </a>

@@ -13,14 +13,21 @@ function SponsorSection() {
                             Join us as a sponsor for RCS 2026 and gain visibility among India's brightest cybersecurity enthusiasts, 
                             students, and professionals. Help shape the future of cybersecurity education.
                         </p>
-                        <div className="pt-6">
+                        <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-center">
                             <a 
                                 href="https://docs.google.com/forms/d/e/1FAIpQLSc-59yjSFonIDsczqTqrkoD0ar3sx_zeIQ4zRngSwPY-_titw/viewform?usp=dialog"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-4 px-10 rounded-xl text-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/50"
+                                className="inline-block bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/50"
                             >
-                                Apply to Become a Sponsor →
+                                Fill Sponsorship Form
+                            </a>
+                            <a 
+                                href="/proposalee.pdf"
+                                download
+                                className="inline-block bg-white hover:bg-gray-100 text-black font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                            >
+                                Download Brochure
                             </a>
                         </div>
                     </div>
