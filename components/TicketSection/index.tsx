@@ -13,7 +13,7 @@ function TicketSection() {
                 <h2 className="text-4xl font-bold text-white mb-8">Get Your Tickets</h2>
                 <div className="flex gap-4">
                     <a href="/register" className="px-8 py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all">
-                        Register Now
+                        Registration Opens on 10th January
                     </a>
                 </div>
             </div>

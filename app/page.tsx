@@ -175,7 +175,7 @@ export default function CommunityHome() {
                                 className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white font-bold py-5 px-10 rounded-xl text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/50"
                             >
                                 <TrophyIcon className="w-6 h-6" />
-                                Register Now & Make Your Mark
+                                Registration Opens on 10th January
                                 <ArrowRightIcon className="w-6 h-6" />
                             </a>
                             <p className="text-gray-400 mt-4">Limited seats available - Don't miss out!</p>
@@ -244,21 +244,12 @@ export default function CommunityHome() {
                                     </div>
 
                                     {/* CTA Button */}
-                                    {event.eventUrl ? (
+                                    {event.eventUrl && (
                                         <a 
                                             href={event.eventUrl}
                                             className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/50 w-fit"
                                         >
                                             Explore Event <ArrowRightIcon className="w-5 h-5" />
-                                        </a>
-                                    ) : (
-                                        <a 
-                                            href={event.blogUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:scale-105 w-fit"
-                                        >
-                                            Read Recap <ArrowRightIcon className="w-5 h-5" />
                                         </a>
                                     )}
                                 </div>
