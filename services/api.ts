@@ -65,7 +65,8 @@ class ApiService {
             const { access_token, refresh_token } = response.data
 
             if (!access_token) {
-                throw new Error('No access token received from server')
+                console.error("Login unexpected response:", response.data)
+                throw new Error(`No access token received. Server responded with: ${JSON.stringify(response.data)}`)
             }
 
             this.setToken(access_token)
