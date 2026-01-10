@@ -104,7 +104,7 @@ export default function CommunityHome() {
                             </p>
                             <div className="flex items-center justify-center gap-2 text-xl text-gray-400 mb-8">
                                 <CalendarIcon className="w-6 h-6" />
-                                <span>January 30, 2026</span>
+                                <span>January 30- 31, 2026</span>
                             </div>
                         </div>
 
