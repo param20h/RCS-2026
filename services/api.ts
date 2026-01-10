@@ -58,32 +58,53 @@ class ApiService {
 
     async login(credentials: LoginCredentials): Promise<User> {
         try {
-            // 1. Login to get token
+            // 1. Login
             console.log('Attempting login with:', credentials.email)
-            const response = await axios.post<LoginResponse>(`${this.baseUrl}/auth/login`, credentials)
+            const response = await axios.post<any>(`${this.baseUrl}/auth/login`, credentials)
+            const data = response.data
 
-            const { access_token, refresh_token } = response.data
+            // CASE 1: Standard JWT (token in response)
+            if (data.access_token) {
+                this.setToken(data.access_token)
+                if (data.refresh_token) this.setRefreshToken(data.refresh_token)
 
-            if (!access_token) {
-                console.error("Login unexpected response:", response.data)
-                throw new Error(`No access token received. Server responded with: ${JSON.stringify(response.data)}`)
+                // If user object is included, return it
+                if (data.user) {
+                    this.setCurrentUser(data.user)
+                    return data.user
+                }
+
+                // Otherwise fetch profile
+                try {
+                    const userResponse = await axios.get<User>(`${this.baseUrl}/auth/me`, {
+                        params: { token: data.access_token }
+                    })
+                    const user = userResponse.data
+                    this.setCurrentUser(user)
+                    return user
+                } catch (meError: any) {
+                    console.error("Fetch User Error:", meError)
+                    throw new Error('Login successful, but failed to fetch user details: ' + (meError.response?.data?.detail || meError.message))
+                }
             }
 
-            this.setToken(access_token)
-            if (refresh_token) this.setRefreshToken(refresh_token)
+            // CASE 2: User Object Returned Directly (No explicit token)
+            // Identify by presence of 'email' and 'id'
+            if (data.email && (data.id || data._id)) {
+                console.log('Login returned User object directly.')
+                // Normalize ID if needed
+                if (!data.id && data._id) {
+                    data.id = data._id
+                }
 
-            // 2. Fetch User Details
-            try {
-                const userResponse = await axios.get<User>(`${this.baseUrl}/auth/me`, {
-                    params: { token: access_token }
-                })
-                const user = userResponse.data
-                this.setCurrentUser(user)
-                return user
-            } catch (meError: any) {
-                console.error("Fetch User Error:", meError)
-                throw new Error('Login successful, but failed to fetch user details: ' + (meError.response?.data?.detail || meError.message))
+                // Assuming no token means we rely on cookies or sessionless for now
+                this.setCurrentUser(data)
+                return data as User
             }
+
+            // CASE 3: Unknown or Error
+            console.error("Login unexpected response:", data)
+            throw new Error(`Login failed. Server responded with: ${JSON.stringify(data)}`)
 
         } catch (error: any) {
             console.error("Login Error:", error)
