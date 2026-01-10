@@ -13,7 +13,7 @@ export default function UnifiedDashboard() {
     const [organizers, setOrganizers] = useState<Organizer[]>([])
     const [newOrgEmail, setNewOrgEmail] = useState('')
     const [loading, setLoading] = useState(true)
-    
+
     // State for expanding team details
     const [expandedTeamId, setExpandedTeamId] = useState<string | null>(null)
 
@@ -61,7 +61,7 @@ export default function UnifiedDashboard() {
     }
 
     const handleRemoveOrganizer = async (email: string) => {
-        if(!confirm('Remove this organizer?')) return
+        if (!confirm('Remove this organizer?')) return
         try {
             await api.removeOrganizer(email)
             toast.success('Organizer removed')
@@ -128,9 +128,9 @@ export default function UnifiedDashboard() {
                                 <div className="p-6 border rounded-lg bg-black/40 border-white/10">
                                     <h4 className="mb-4 font-medium text-gray-300 text-md">Grant Organizer Access</h4>
                                     <form onSubmit={handleAddOrganizer} className="flex gap-2">
-                                        <input 
-                                            type="email" 
-                                            placeholder="Enter organizer email..." 
+                                        <input
+                                            type="email"
+                                            placeholder="Enter organizer email..."
                                             className="flex-1 px-3 py-2 text-white transition-all border rounded outline-none bg-white/5 border-white/20 focus:border-primary focus:ring-1 focus:ring-primary"
                                             value={newOrgEmail}
                                             onChange={(e) => setNewOrgEmail(e.target.value)}
@@ -152,7 +152,7 @@ export default function UnifiedDashboard() {
                                                     <span className="font-mono text-sm text-white">{org.email}</span>
                                                     <span className="text-xs text-gray-500">{org.name || 'Pending Setup'}</span>
                                                 </div>
-                                                <button 
+                                                <button
                                                     onClick={() => handleRemoveOrganizer(org.email)}
                                                     className="p-1 text-gray-400 transition-colors hover:text-red-500"
                                                     title="Revoke Access"
@@ -189,7 +189,7 @@ export default function UnifiedDashboard() {
                                     <tbody className="bg-transparent divide-y divide-white/10">
                                         {registrations.map((team) => (
                                             <>
-                                                <tr key={team.id} className="transition-colors cursor-pointer hover:bg-white/5" onClick={() => toggleTeam(team.id)}>
+                                                <tr key={team.id || 'unknown'} className="transition-colors cursor-pointer hover:bg-white/5" onClick={() => toggleTeam(team.id || '')}>
                                                     <td className="py-4 pl-4 pr-3 text-sm font-bold text-white whitespace-nowrap sm:pl-6">
                                                         {team.team_name}
                                                     </td>
@@ -199,7 +199,7 @@ export default function UnifiedDashboard() {
                                                     <td className="px-3 py-4 text-sm text-gray-300 whitespace-nowrap">{team.where_you_reside}</td>
                                                     <td className="px-3 py-4 text-sm text-center whitespace-nowrap">
                                                         <button className="transition-colors text-primary hover:text-white">
-                                                            {expandedTeamId === team.id ? <ChevronUpIcon className="w-5 h-5"/> : <ChevronDownIcon className="w-5 h-5"/>}
+                                                            {expandedTeamId === team.id ? <ChevronUpIcon className="w-5 h-5" /> : <ChevronDownIcon className="w-5 h-5" />}
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -216,10 +216,10 @@ export default function UnifiedDashboard() {
                                                                     </div>
                                                                     <div>
                                                                         <span className="text-xs text-gray-500 uppercase">Registration Date:</span>
-                                                                        <p className="text-sm text-white">{new Date(team.registeredAt).toLocaleString()}</p>
+                                                                        <p className="text-sm text-white">{team.registeredAt ? new Date(team.registeredAt).toLocaleString() : 'N/A'}</p>
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                                 {team.team_members && team.team_members.length > 0 ? (
                                                                     <div className="overflow-hidden border rounded-md border-white/10">
                                                                         <table className="min-w-full divide-y divide-white/10">
@@ -294,7 +294,7 @@ export default function UnifiedDashboard() {
                                 <div><dt className="text-xs tracking-widest text-gray-500 uppercase">University</dt><dd className="mt-1 font-mono text-white">{user.uni_name || 'N/A'}</dd></div>
                             </dl>
                         </div>
-                        
+
                         {user.team_members && user.team_members.length > 0 && (
                             <div className="overflow-hidden border rounded-lg bg-black/40 border-white/10 backdrop-blur-sm">
                                 <div className="p-6 border-b border-white/10">
