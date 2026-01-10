@@ -108,7 +108,10 @@ class ApiService {
 
         } catch (error: any) {
             console.error("Login Error:", error)
-            const errorMessage = error.response?.data?.detail || error.message || 'Login failed'
+            const errorMessage = error.response?.data?.detail ||
+                (error.response?.data ? JSON.stringify(error.response.data) : null) ||
+                error.message ||
+                'Login failed'
             throw new Error(errorMessage)
         }
     }
