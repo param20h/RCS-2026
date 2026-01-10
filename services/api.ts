@@ -59,29 +59,35 @@ class ApiService {
     async login(credentials: LoginCredentials): Promise<User> {
         try {
             // 1. Login to get token
+            console.log('Attempting login with:', credentials.email)
             const response = await axios.post<LoginResponse>(`${this.baseUrl}/auth/login`, credentials)
-            
-            // Assume standard FastAPI OAuth2 response if not explicitly defined
+
             const { access_token, refresh_token } = response.data
-            
-            if (access_token) {
-                this.setToken(access_token)
-                if (refresh_token) this.setRefreshToken(refresh_token)
+
+            if (!access_token) {
+                throw new Error('No access token received from server')
             }
 
-            // 2. Fetch User Details (as per requirement: GET /auth/me?token=...)
-            // Note: usually /auth/me uses Authorization header, but spec says query param 'token'
-            const userResponse = await axios.get<User>(`${this.baseUrl}/auth/me`, {
-                params: { token: access_token || '' }
-            })
-            
-            const user = userResponse.data
-            this.setCurrentUser(user)
-            return user
+            this.setToken(access_token)
+            if (refresh_token) this.setRefreshToken(refresh_token)
+
+            // 2. Fetch User Details
+            try {
+                const userResponse = await axios.get<User>(`${this.baseUrl}/auth/me`, {
+                    params: { token: access_token }
+                })
+                const user = userResponse.data
+                this.setCurrentUser(user)
+                return user
+            } catch (meError: any) {
+                console.error("Fetch User Error:", meError)
+                throw new Error('Login successful, but failed to fetch user details: ' + (meError.response?.data?.detail || meError.message))
+            }
 
         } catch (error: any) {
-            console.error("Login Error:", error.response?.data || error.message)
-            throw new Error(error.response?.data?.detail || 'Login failed')
+            console.error("Login Error:", error)
+            const errorMessage = error.response?.data?.detail || error.message || 'Login failed'
+            throw new Error(errorMessage)
         }
     }
 
@@ -89,23 +95,23 @@ class ApiService {
         try {
             // Register endpoint
             await axios.post(`${this.baseUrl}/auth/register`, data)
-            
+
             // Automatically login after register? 
             // Often reg returns success, let's login the user automatically if possible, 
             // or just let them login manually. 
             // For now, return void and let UI redirect to login or dashboard.
-            
+
             // Attempt auto-login if you want, but safer to let them login to verify creds.
             // Or if register returns token, use it.
-            
+
         } catch (error: any) {
-             console.error("Register Error:", error.response?.data || error.message)
-             // Handle array of errors from Validation Error
-             if (error.response?.data?.detail && Array.isArray(error.response.data.detail)) {
-                 const msg = error.response.data.detail.map((d: any) => d.msg).join(', ');
-                 throw new Error(msg)
-             }
-             throw new Error(error.response?.data?.detail || 'Registration failed')
+            console.error("Register Error:", error.response?.data || error.message)
+            // Handle array of errors from Validation Error
+            if (error.response?.data?.detail && Array.isArray(error.response.data.detail)) {
+                const msg = error.response.data.detail.map((d: any) => d.msg).join(', ');
+                throw new Error(msg)
+            }
+            throw new Error(error.response?.data?.detail || 'Registration failed')
         }
     }
 
@@ -113,7 +119,7 @@ class ApiService {
         try {
             const refreshToken = this.getRefreshToken()
             if (refreshToken) {
-                 await axios.post(`${this.baseUrl}/auth/logout`, { refresh_token: refreshToken })
+                await axios.post(`${this.baseUrl}/auth/logout`, { refresh_token: refreshToken })
             }
         } catch (error) {
             console.warn("Logout failed on server", error)
@@ -127,7 +133,7 @@ class ApiService {
     async getRegistrations(): Promise<User[]> {
         // Feature disabled: Endpoint not provided in new spec
         console.warn("getRegistrations is currently disabled/mocked pending backend implementation")
-        return [] 
+        return []
         /* 
         try {
             const response = await axios.get(`${this.baseUrl}/registrations`, {
@@ -149,11 +155,11 @@ class ApiService {
     }
 
     async addOrganizer(email: string): Promise<void> {
-       throw new Error("Feature not implemented")
+        throw new Error("Feature not implemented")
     }
 
     async removeOrganizer(email: string): Promise<void> {
-       throw new Error("Feature not implemented")
+        throw new Error("Feature not implemented")
     }
 
     // --- Session Management ---
@@ -168,9 +174,9 @@ class ApiService {
         if (typeof window === 'undefined') return null
         return localStorage.getItem('access_token')
     }
-    
+
     getRefreshToken(): string | null {
-         if (typeof window === 'undefined') return null
+        if (typeof window === 'undefined') return null
         return localStorage.getItem('refresh_token')
     }
 
@@ -181,7 +187,7 @@ class ApiService {
     private setToken(token: string): void {
         localStorage.setItem('access_token', token)
     }
-    
+
     private setRefreshToken(token: string): void {
         localStorage.setItem('refresh_token', token)
     }
