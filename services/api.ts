@@ -1,8 +1,9 @@
 import { RegisterForm } from '@/validators/register.validator'
 import axios from 'axios';
 
+// Interfaces matching Backend or Frontend requirements
 export interface User {
-    id: string
+    id?: string
     name: string
     email: string
     contact_no: string
@@ -10,9 +11,13 @@ export interface User {
     uni_name?: string
     where_you_reside: string
     team_name: string
-    team_members?: any[]
-    role: 'attendee' | 'organizer' | 'superadmin'
-    registeredAt: string
+    team_members?: {
+        name: string
+        email: string
+        contact_no: string
+    }[]
+    role?: 'attendee' | 'organizer' | 'superadmin' // Optional as backend might not return it yet
+    registeredAt?: string
 }
 
 export interface Organizer {
@@ -27,44 +32,103 @@ export interface LoginCredentials {
     password?: string
 }
 
+export interface LoginResponse {
+    access_token: string;
+    token_type: string;
+    refresh_token?: string;
+    user?: User; // Sometimes backend returns user object directly
+}
+
 class ApiService {
     private get baseUrl() {
-        return process.env.NEXT_PUBLIC_API_URL || '/api'
+        return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
     }
 
     private getAuthHeaders() {
-        const user = this.getCurrentUser()
-        if (user && user.email) {
+        const token = this.getToken()
+        if (token) {
             return {
-                'x-user-email': user.email
+                'Authorization': `Bearer ${token}`
             }
         }
         return {}
     }
 
+    // --- Auth Methods ---
+
     async login(credentials: LoginCredentials): Promise<User> {
         try {
-            const response = await axios.post(`${this.baseUrl}/auth/login`, credentials)
-            const user = response.data
+            // 1. Login to get token
+            const response = await axios.post<LoginResponse>(`${this.baseUrl}/auth/login`, credentials)
+            
+            // Assume standard FastAPI OAuth2 response if not explicitly defined
+            const { access_token, refresh_token } = response.data
+            
+            if (access_token) {
+                this.setToken(access_token)
+                if (refresh_token) this.setRefreshToken(refresh_token)
+            }
+
+            // 2. Fetch User Details (as per requirement: GET /auth/me?token=...)
+            // Note: usually /auth/me uses Authorization header, but spec says query param 'token'
+            const userResponse = await axios.get<User>(`${this.baseUrl}/auth/me`, {
+                params: { token: access_token || '' }
+            })
+            
+            const user = userResponse.data
             this.setCurrentUser(user)
             return user
+
         } catch (error: any) {
-            throw new Error(error.response?.data?.error || 'Login failed')
+            console.error("Login Error:", error.response?.data || error.message)
+            throw new Error(error.response?.data?.detail || 'Login failed')
         }
     }
 
-    async register(data: RegisterForm): Promise<User> {
+    async register(data: RegisterForm): Promise<void> {
         try {
-            const response = await axios.post(`${this.baseUrl}/auth/register`, data)
-            const user = response.data.user
-            this.setCurrentUser(user)
-            return user
+            // Register endpoint
+            await axios.post(`${this.baseUrl}/auth/register`, data)
+            
+            // Automatically login after register? 
+            // Often reg returns success, let's login the user automatically if possible, 
+            // or just let them login manually. 
+            // For now, return void and let UI redirect to login or dashboard.
+            
+            // Attempt auto-login if you want, but safer to let them login to verify creds.
+            // Or if register returns token, use it.
+            
         } catch (error: any) {
-            throw new Error(error.response?.data?.error || 'Registration failed')
+             console.error("Register Error:", error.response?.data || error.message)
+             // Handle array of errors from Validation Error
+             if (error.response?.data?.detail && Array.isArray(error.response.data.detail)) {
+                 const msg = error.response.data.detail.map((d: any) => d.msg).join(', ');
+                 throw new Error(msg)
+             }
+             throw new Error(error.response?.data?.detail || 'Registration failed')
         }
     }
+
+    async logout(): Promise<void> {
+        try {
+            const refreshToken = this.getRefreshToken()
+            if (refreshToken) {
+                 await axios.post(`${this.baseUrl}/auth/logout`, { refresh_token: refreshToken })
+            }
+        } catch (error) {
+            console.warn("Logout failed on server", error)
+        } finally {
+            this.clearSession()
+        }
+    }
+
+    // --- Data Methods ---
 
     async getRegistrations(): Promise<User[]> {
+        // Feature disabled: Endpoint not provided in new spec
+        console.warn("getRegistrations is currently disabled/mocked pending backend implementation")
+        return [] 
+        /* 
         try {
             const response = await axios.get(`${this.baseUrl}/registrations`, {
                 headers: this.getAuthHeaders()
@@ -74,34 +138,25 @@ class ApiService {
             if (error.response?.status === 403) throw new Error("Unauthorized")
             return []
         }
+        */
     }
 
     // --- Admin Methods ---
+    // Disabled as per missing spec
+
     async getOrganizers(): Promise<Organizer[]> {
-        try {
-            const response = await axios.get(`${this.baseUrl}/admin/organizers`, {
-                headers: this.getAuthHeaders()
-            })
-            return response.data
-        } catch (error) { return [] }
+        return []
     }
 
     async addOrganizer(email: string): Promise<void> {
-        try {
-            await axios.post(`${this.baseUrl}/admin/organizers`, { email }, {
-                headers: this.getAuthHeaders()
-            })
-        } catch (error: any) {
-            throw new Error(error.response?.data?.error || 'Failed to add')
-        }
+       throw new Error("Feature not implemented")
     }
 
     async removeOrganizer(email: string): Promise<void> {
-        await axios.delete(`${this.baseUrl}/admin/organizers`, {
-            data: { email },
-            headers: this.getAuthHeaders()
-        })
+       throw new Error("Feature not implemented")
     }
+
+    // --- Session Management ---
 
     getCurrentUser(): User | null {
         if (typeof window === 'undefined') return null
@@ -109,12 +164,32 @@ class ApiService {
         return stored ? JSON.parse(stored) : null
     }
 
-    logout(): void {
-        localStorage.removeItem('currentUser')
+    getToken(): string | null {
+        if (typeof window === 'undefined') return null
+        return localStorage.getItem('access_token')
+    }
+    
+    getRefreshToken(): string | null {
+         if (typeof window === 'undefined') return null
+        return localStorage.getItem('refresh_token')
     }
 
     private setCurrentUser(user: User): void {
         localStorage.setItem('currentUser', JSON.stringify(user))
+    }
+
+    private setToken(token: string): void {
+        localStorage.setItem('access_token', token)
+    }
+    
+    private setRefreshToken(token: string): void {
+        localStorage.setItem('refresh_token', token)
+    }
+
+    private clearSession(): void {
+        localStorage.removeItem('currentUser')
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
     }
 }
 

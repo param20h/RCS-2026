@@ -36,15 +36,14 @@ export default function RegisterPage() {
 
         try {
             await api.register(data)
-            toast.success('Successfully Registered!')
-            router.push('/dashboard')
+            toast.success('Successfully Registered! Please login.')
+            router.push('/login')
         } catch (err: any) {
             toast.error(err.message || 'Error Registering')
         }
     }
 
-    return (
-        <main className="relative flex flex-col items-center justify-center min-h-screen px-4 pt-24 pb-12 overflow-hidden sm:px-6 lg:px-8">
+    return (<><main className="relative flex flex-col items-center justify-center min-h-screen px-4 pt-24 pb-12 overflow-hidden sm:px-6 lg:px-8">
             <div className="scanlines"></div>
             <div className="absolute inset-0 -z-10 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
@@ -71,8 +70,7 @@ export default function RegisterPage() {
                                     autoComplete="name"
                                     required
                                     {...register('name')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                 {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
                             </div>
                             <div>
@@ -85,11 +83,10 @@ export default function RegisterPage() {
                                     autoComplete="email"
                                     required
                                     {...register('email')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                 {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                             </div>
-                            
+
                             <div className="sm:col-span-2">
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                                     Password
@@ -100,8 +97,7 @@ export default function RegisterPage() {
                                     autoComplete="new-password"
                                     required
                                     {...register('password')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                 {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
                             </div>
 
@@ -115,8 +111,7 @@ export default function RegisterPage() {
                                     autoComplete="tel"
                                     required
                                     {...register('contact_no')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                 {errors.contact_no && <p className="mt-1 text-xs text-red-500">{errors.contact_no.message}</p>}
                             </div>
                             <div>
@@ -128,8 +123,7 @@ export default function RegisterPage() {
                                     type="text"
                                     required
                                     {...register('where_you_reside')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                 {errors.where_you_reside && <p className="mt-1 text-xs text-red-500">{errors.where_you_reside.message}</p>}
                             </div>
                             <div>
@@ -140,8 +134,7 @@ export default function RegisterPage() {
                                     id="uni_id"
                                     type="text"
                                     {...register('uni_id')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                             </div>
                             <div>
                                 <label htmlFor="uni_name" className="block text-sm font-medium text-gray-300">
@@ -151,8 +144,7 @@ export default function RegisterPage() {
                                     id="uni_name"
                                     type="text"
                                     {...register('uni_name')}
-                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                />
+                                    className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                             </div>
                         </div>
 
@@ -166,8 +158,7 @@ export default function RegisterPage() {
                                 type="text"
                                 required
                                 {...register('team_name')}
-                                className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                            />
+                                className="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                             {errors.team_name && <p className="mt-1 text-xs text-red-500">{errors.team_name.message}</p>}
                         </div>
 
@@ -201,8 +192,7 @@ export default function RegisterPage() {
                                             <input
                                                 placeholder="Name"
                                                 {...register(`team_members.${index}.name` as const)}
-                                                className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                            />
+                                                className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                             {errors.team_members?.[index]?.name && (
                                                 <p className="mt-1 text-xs text-red-500">{errors.team_members[index]?.name?.message}</p>
                                             )}
@@ -211,8 +201,7 @@ export default function RegisterPage() {
                                             <input
                                                 placeholder="Email"
                                                 {...register(`team_members.${index}.email` as const)}
-                                                className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                            />
+                                                className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                             {errors.team_members?.[index]?.email && (
                                                 <p className="mt-1 text-xs text-red-500">{errors.team_members[index]?.email?.message}</p>
                                             )}
@@ -221,8 +210,7 @@ export default function RegisterPage() {
                                             <input
                                                 placeholder="Contact"
                                                 {...register(`team_members.${index}.contact_no` as const)}
-                                                className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3"
-                                            />
+                                                className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 px-3" />
                                             {errors.team_members?.[index]?.contact_no && (
                                                 <p className="mt-1 text-xs text-red-500">{errors.team_members[index]?.contact_no?.message}</p>
                                             )}
@@ -250,6 +238,6 @@ export default function RegisterPage() {
                     </div>
                 </form>
             </div>
-        </main>
+        </main></>
     )
 }
