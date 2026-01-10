@@ -1,5 +1,5 @@
 import { RegisterForm } from '@/validators/register.validator'
-import axios from 'axios'
+import axios from 'axios';
 
 export interface User {
     id: string
