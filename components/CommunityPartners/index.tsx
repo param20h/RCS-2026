@@ -1,9 +1,35 @@
 import React from 'react';
+import communityPartners from '@/config/communitypartners.json';
 
 function CommunityPartners() {
     return (
         <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 pt-28 pb-16">
             <h2 className="text-5xl lg:text-8xl text-primary font-bold mb-8">Community Partners</h2>
+            
+            {/* Partners Grid */}
+            {communityPartners.length > 0 && (
+                <div className="mt-12 mb-16">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 items-center justify-items-center">
+                        {communityPartners.map((partner, index) => (
+                            <a
+                                key={index}
+                                href={partner.links}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group relative p-6 rounded-xl glass-card border-2 border-accent/20 hover:border-accent/60 transition-all duration-300 hover:scale-110 w-full h-32 flex items-center justify-center"
+                            >
+                                <img
+                                    src={partner.img}
+                                    alt={partner.name}
+                                    className="object-contain max-h-20 w-auto filter brightness-90 group-hover:brightness-110 transition-all"
+                                />
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Call to Action */}
             <div className="mt-12 flex flex-col items-center">
                 <div className="glass-card max-w-3xl w-full p-8 lg:p-12 rounded-2xl border-2 border-accent/30 hover:border-accent transition-all duration-300">
                     <div className="text-center space-y-6">

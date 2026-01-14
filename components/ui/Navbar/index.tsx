@@ -73,7 +73,7 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex lg:hidden">
+                                <div className="flex lg:hidden" suppressHydrationWarning>
                                     {/* Mobile menu button */}
                                     <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                                         <span className="sr-only">
